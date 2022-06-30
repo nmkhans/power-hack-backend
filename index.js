@@ -28,6 +28,13 @@ const server = async () => {
             const result = await cursor.toArray();
             res.send(result);
         })
+
+        //? post a new bill
+        app.post('/add-billing', async (req, res) => {
+            const data = req.body;
+            const result = await billCollection.insertOne(data);
+            res.send(result);
+        })
     }
     
     finally {
