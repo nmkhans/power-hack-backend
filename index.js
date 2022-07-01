@@ -43,6 +43,24 @@ const server = async () => {
             const result = await billCollection.deleteOne(query);
             res.send(result);
         })
+
+        //? update a bill
+        app.put('/update-billing/:id', async (req, res) => {
+            const id = req.params.id;
+            const data = req.body;
+            const filter = {_id: ObjectId(id)};
+            const option = {upsert: true};
+            const updateDoc = {
+                $set: {
+                    fullName: data.fullName,
+                    email: data.email,
+                    phone: data.phone,
+                    paidAmount: data.paidAmount
+                }
+            }
+            const result = await billCollection.updateOne(filter, updateDoc, option);
+            res.send(result)
+        })
     }
     
     finally {
