@@ -68,7 +68,36 @@ const getBillingList = async (req, res) => {
     }
 }
 
+const updateBilling = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = req.body;
+        const updatedDoc = {
+            $set: data
+        }
+
+        const result = await Billing.updateOne(
+            { _id: id },
+            updatedDoc,
+            { upsert: true }
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Billing info updated",
+            data: result
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "There was a server side error!"
+        })
+    }
+}
+
 module.exports = {
     createBilling,
-    getBillingList
+    getBillingList,
+    updateBilling
 }

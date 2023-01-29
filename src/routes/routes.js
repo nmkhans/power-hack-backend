@@ -1,5 +1,5 @@
 const express = require("express");
-const { createBilling, getBillingList } = require("../controllers/billingController");
+const { createBilling, getBillingList, updateBilling } = require("../controllers/billingController");
 const defaultRoute = require("../controllers/defaultController");
 const { registerUser, loginUser } = require("../controllers/userController");
 
@@ -22,5 +22,8 @@ router.post("/add-billing", createBilling)
 
 //? get billing list
 router.get("/billing-list", getBillingList)
+
+//? update billing
+router.put("/update-billing/:id", updateBilling)
 
 module.exports = router;
