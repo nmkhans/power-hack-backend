@@ -2,6 +2,7 @@ const express = require("express");
 const { createBilling, getBillingList, updateBilling, deleteBilling } = require("../controllers/billingController");
 const defaultRoute = require("../controllers/defaultController");
 const { registerUser, loginUser } = require("../controllers/userController");
+const verifyUser = require("../middleware/verifyUser");
 
 //? define router
 const router = express.Router();
@@ -18,15 +19,15 @@ router.post("/registration", registerUser)
 router.post("/login", loginUser)
 
 //? create billing
-router.post("/add-billing", createBilling)
+router.post("/add-billing", verifyUser, createBilling)
 
 //? get billing list
-router.get("/billing-list", getBillingList)
+router.get("/billing-list", verifyUser, getBillingList)
 
 //? update billing
-router.put("/update-billing/:id", updateBilling)
+router.put("/update-billing/:id", verifyUser, updateBilling)
 
 //? delete billing
-router.delete("/delete-billing/:id", deleteBilling)
+router.delete("/delete-billing/:id", verifyUser, deleteBilling)
 
 module.exports = router;
