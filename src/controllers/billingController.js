@@ -96,8 +96,28 @@ const updateBilling = async (req, res) => {
     }
 }
 
+const deleteBilling = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await Billing.deleteOne({ _id: id })
+
+        res.status(200).json({
+            success: true,
+            message: "Billing deleted.",
+            data: result
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "There was a server side error"
+        })
+    }
+}
+
 module.exports = {
     createBilling,
     getBillingList,
-    updateBilling
+    updateBilling,
+    deleteBilling
 }
