@@ -1,5 +1,5 @@
 const express = require("express");
-const { createBilling } = require("../controllers/billingController");
+const { createBilling, getBillingList } = require("../controllers/billingController");
 const defaultRoute = require("../controllers/defaultController");
 const { registerUser, loginUser } = require("../controllers/userController");
 
@@ -19,5 +19,8 @@ router.post("/login", loginUser)
 
 //? create billing
 router.post("/add-billing", createBilling)
+
+//? get billing list
+router.get("/billing-list", getBillingList)
 
 module.exports = router;
