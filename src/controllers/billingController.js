@@ -37,9 +37,19 @@ const getBillingList = async (req, res) => {
             }
 
             const result = await Billing.aggregate([
-                { $match: searchQuery },
-                { $skip: skipRow },
-                { $limit: perPage }
+                {
+                    $facet: {
+                        count: [
+                            { $match: searchQuery },
+                            { $count: "count" }
+                        ],
+                        data: [
+                            { $match: searchQuery },
+                            { $skip: skipRow },
+                            { $limit: perPage }
+                        ]
+                    }
+                }
             ])
 
             res.status(200).json({
@@ -49,8 +59,17 @@ const getBillingList = async (req, res) => {
             })
         } else {
             const result = await Billing.aggregate([
-                { $skip: skipRow },
-                { $limit: perPage }
+                {
+                    $facet: {
+                        count: [
+                            { $count: "count" }
+                        ],
+                        data: [
+                            { $skip: skipRow },
+                            { $limit: perPage }
+                        ]
+                    }
+                }
             ])
 
             res.status(200).json({
@@ -61,6 +80,7 @@ const getBillingList = async (req, res) => {
         }
 
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             success: false,
             message: "There was a server side error!"
@@ -115,9 +135,26 @@ const deleteBilling = async (req, res) => {
     }
 }
 
+const getTotalBill = async (req, res) => {
+    try {
+        const result = await Billing.aggregate([{
+            $group: { _id: "paidAmount", total: { $sum: "$paidAmount" } }
+        }])
+
+        res.status(200).json({
+            success: true,
+            message: "All paid amount",
+            data: result
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports = {
     createBilling,
     getBillingList,
     updateBilling,
-    deleteBilling
+    deleteBilling,
+    getTotalBill
 }

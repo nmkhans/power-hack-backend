@@ -1,5 +1,5 @@
 const express = require("express");
-const { createBilling, getBillingList, updateBilling, deleteBilling } = require("../controllers/billingController");
+const { createBilling, getBillingList, updateBilling, deleteBilling, getTotalBill } = require("../controllers/billingController");
 const defaultRoute = require("../controllers/defaultController");
 const { registerUser, loginUser } = require("../controllers/userController");
 const verifyUser = require("../middleware/verifyUser");
@@ -29,5 +29,7 @@ router.put("/update-billing/:id", verifyUser, updateBilling)
 
 //? delete billing
 router.delete("/delete-billing/:id", verifyUser, deleteBilling)
+
+router.get("/get-total-bill", getTotalBill)
 
 module.exports = router;
