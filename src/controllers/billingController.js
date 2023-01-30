@@ -88,6 +88,24 @@ const getBillingList = async (req, res) => {
     }
 }
 
+const getSingleBilling = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await Billing.findOne({ _id: id })
+        
+        res.status(200).json({
+            success: true,
+            message: "Single billing info",
+            data: result
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "There was a server side error"
+        })
+    }
+}
+
 const updateBilling = async (req, res) => {
     try {
         const { id } = req.params;
@@ -156,5 +174,6 @@ module.exports = {
     getBillingList,
     updateBilling,
     deleteBilling,
-    getTotalBill
+    getTotalBill,
+    getSingleBilling
 }

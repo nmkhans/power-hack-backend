@@ -54,12 +54,16 @@ const loginUser = async (req, res) => {
 
         if (existUser) {
             const matchPassword = await bcrypt.compare(data.password, existUser.password);
-            
+
             if (matchPassword) {
                 const user = await User.findOne(
                     { email: data.email },
-                    { password: 0 }
-                    );
+                    {
+                        password: 0,
+                        createdAt: 0,
+                        updatedAt: 0
+                    }
+                );
                 const token = jwt.sign(
                     { email: user.email },
                     process.env.TOKEN_SECRET,
